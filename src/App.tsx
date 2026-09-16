@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { PrintSheet } from "./components/PrintSheet";
 import { RoomCard } from "./components/RoomCard";
 import { downloadProjectPdf } from "./lib/exportPdf";
 import { clearProject, loadProject, saveProject } from "./lib/storage";
@@ -10,7 +11,6 @@ function startProject(): Project {
   const wantsNew = params.has("new") || params.has("fresh");
   if (wantsNew) {
     clearProject();
-    // Keep a clean shareable URL after opening
     const url = new URL(window.location.href);
     url.searchParams.delete("new");
     url.searchParams.delete("fresh");
@@ -36,6 +36,15 @@ export default function App() {
   useEffect(() => {
     saveProject(project);
   }, [project]);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    if (!params.has("print")) return;
+    const url = new URL(window.location.href);
+    url.searchParams.delete("print");
+    window.history.replaceState({}, "", url.pathname + url.search + url.hash);
+    window.setTimeout(() => window.print(), 250);
+  }, []);
 
   const updateRoom = (id: string, room: RoomOrder) => {
     setProject((p) => ({
@@ -77,6 +86,11 @@ export default function App() {
     }
   };
 
+  const handlePrint = () => {
+    saveProject(project);
+    window.print();
+  };
+
   const handleReset = () => {
     if (!window.confirm("Clear this project and start fresh?")) return;
     clearProject();
@@ -95,72 +109,79 @@ export default function App() {
   };
 
   return (
-    <div className="app">
-      <header className="top">
-        <div>
-          <p className="brand">RAPP COLLECTIONS</p>
-          <h1>Order form</h1>
-        </div>
-        <div className="top-actions">
-          <button type="button" className="btn-secondary" onClick={handleCopyShareLink}>
-            {linkFlash ? "Link copied" : "Copy share link"}
-          </button>
-          <button type="button" className="btn-secondary" onClick={handleSave}>
-            {savedFlash ? "PDF saved" : "Save PDF"}
-          </button>
-          <button type="button" className="btn-text" onClick={handleReset}>
-            New project
-          </button>
-        </div>
-      </header>
+    <>
+      <div className="app no-print">
+        <header className="top">
+          <div>
+            <p className="brand">RAPP COLLECTIONS</p>
+            <h1>Order form</h1>
+          </div>
+          <div className="top-actions">
+            <button type="button" className="btn-secondary" onClick={handleCopyShareLink}>
+              {linkFlash ? "Link copied" : "Copy share link"}
+            </button>
+            <button type="button" className="btn-secondary" onClick={handlePrint}>
+              Print
+            </button>
+            <button type="button" className="btn-secondary" onClick={handleSave}>
+              {savedFlash ? "PDF saved" : "Save PDF"}
+            </button>
+            <button type="button" className="btn-text" onClick={handleReset}>
+              New project
+            </button>
+          </div>
+        </header>
 
-      <section className="project-block">
-        <label className="field">
-          <span>Project name</span>
-          <input
-            type="text"
-            value={project.name}
-            onChange={(e) => setProject({ ...project, name: e.target.value })}
-            placeholder="Client / project name"
-          />
-        </label>
-      </section>
+        <section className="project-block">
+          <label className="field">
+            <span>Project name</span>
+            <input
+              type="text"
+              value={project.name}
+              onChange={(e) => setProject({ ...project, name: e.target.value })}
+              placeholder="Client / project name"
+            />
+          </label>
+        </section>
 
-      <section className="rooms">
-        <div className="rooms-toolbar">
-          <h2>Rooms</h2>
-          <button type="button" className="btn-primary" onClick={addRoom}>
-            + Add room
-          </button>
-        </div>
-        {project.rooms.map((room) => (
-          <RoomCard
-            key={room.id}
-            room={room}
-            onChange={(r) => updateRoom(room.id, r)}
-            onRename={(name) => renameRoom(room.id, name)}
-            onRemove={() => removeRoom(room.id)}
-            canRemove={project.rooms.length > 1}
-          />
-        ))}
-      </section>
+        <section className="rooms">
+          <div className="rooms-toolbar">
+            <h2>Rooms</h2>
+            <button type="button" className="btn-primary" onClick={addRoom}>
+              + Add room
+            </button>
+          </div>
+          {project.rooms.map((room) => (
+            <RoomCard
+              key={room.id}
+              room={room}
+              onChange={(r) => updateRoom(room.id, r)}
+              onRename={(name) => renameRoom(room.id, name)}
+              onRemove={() => removeRoom(room.id)}
+              canRemove={project.rooms.length > 1}
+            />
+          ))}
+        </section>
 
-      <section className="project-block">
-        <label className="field">
-          <span>Additional notes</span>
-          <textarea
-            rows={3}
-            value={project.notes}
-            onChange={(e) => setProject({ ...project, notes: e.target.value })}
-            placeholder="Lead time, shipping, special instructions…"
-          />
-        </label>
-      </section>
+        <section className="project-block">
+          <label className="field">
+            <span>Additional notes</span>
+            <textarea
+              rows={3}
+              value={project.notes}
+              onChange={(e) => setProject({ ...project, notes: e.target.value })}
+              placeholder="Lead time, shipping, special instructions…"
+            />
+          </label>
+        </section>
 
-      <p className="footer-note">
-        Draft auto-saves in this browser. Save PDF downloads the order to your device.
-        Share link opens a blank new project for anyone.
-      </p>
-    </div>
+        <p className="footer-note">
+          Draft auto-saves in this browser. Print or Save PDF for a paper copy.
+          Share link opens a blank new project for anyone.
+        </p>
+      </div>
+
+      <PrintSheet project={project} />
+    </>
   );
 }

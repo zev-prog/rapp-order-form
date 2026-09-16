@@ -359,3 +359,188 @@ textarea {
     flex: 1 1 100%;
   }
 }
+
+/* —— Printable order sheet —— */
+.print-only {
+  display: none;
+}
+
+@media print {
+  @page {
+    size: A4;
+    margin: 14mm 12mm;
+  }
+
+  html,
+  body,
+  #root {
+    background: #fff !important;
+    min-height: 0;
+  }
+
+  .no-print {
+    display: none !important;
+  }
+
+  .print-only {
+    display: block !important;
+  }
+
+  .print-sheet {
+    color: #222;
+    font-family: Georgia, "Times New Roman", serif;
+    font-size: 11pt;
+    line-height: 1.35;
+    max-width: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .print-top {
+    border-bottom: 1.5pt solid #9a7b4f;
+    padding-bottom: 10pt;
+    margin-bottom: 14pt;
+  }
+
+  .print-brand {
+    margin: 0 0 2pt;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 9pt;
+    letter-spacing: 0.22em;
+    color: #9a7b4f;
+    font-weight: 700;
+  }
+
+  .print-top h1 {
+    margin: 0 0 10pt;
+    font-size: 20pt;
+    font-weight: 500;
+  }
+
+  .print-meta {
+    display: flex;
+    gap: 24pt;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 10pt;
+  }
+
+  .print-meta p {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2pt;
+  }
+
+  .print-meta span {
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #666;
+  }
+
+  .print-room {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    border: 0.75pt solid #ccc;
+    padding: 10pt 12pt;
+    margin: 0 0 12pt;
+  }
+
+  .print-room-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12pt;
+    border-bottom: 0.5pt solid #ddd;
+    padding-bottom: 6pt;
+    margin-bottom: 8pt;
+  }
+
+  .print-room h3 {
+    margin: 0;
+    font-size: 13pt;
+  }
+
+  .print-style {
+    margin: 0;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 9pt;
+    color: #555;
+  }
+
+  .print-group {
+    margin: 0 0 8pt;
+  }
+
+  .print-group h4,
+  .print-notes h4 {
+    margin: 0 0 3pt;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 8pt;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #9a7b4f;
+  }
+
+  .print-group table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .print-group th,
+  .print-group td {
+    border-bottom: 0.5pt solid #e5e5e5;
+    padding: 3pt 4pt;
+    text-align: left;
+    vertical-align: top;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 9.5pt;
+  }
+
+  .print-group th {
+    color: #777;
+    font-weight: 600;
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+  }
+
+  .print-group .qty {
+    width: 42pt;
+    white-space: nowrap;
+  }
+
+  .print-notes p,
+  .print-notes-body {
+    margin: 0;
+    white-space: pre-wrap;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 9.5pt;
+  }
+
+  .print-sign {
+    display: flex;
+    gap: 24pt;
+    margin-top: 18pt;
+    padding-top: 10pt;
+  }
+
+  .print-sign > div {
+    flex: 1;
+  }
+
+  .print-sign p {
+    margin: 0 0 18pt;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-size: 8pt;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #666;
+  }
+
+  .sign-line {
+    border-bottom: 0.75pt solid #333;
+    height: 1pt;
+  }
+}
+
