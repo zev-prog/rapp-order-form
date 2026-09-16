@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && node scripts/generate-blank-pdf.mjs",
+    "blank-pdf": "node scripts/generate-blank-pdf.mjs",
     "lint": "oxlint",
     "preview": "vite preview"
   },

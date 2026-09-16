@@ -360,248 +360,48 @@ textarea {
   }
 }
 
-/* —— Blank print-only form (circle sizes) —— */
-.print-only {
-  display: none;
-}
-
+/* —— Regular browser print (current filled form) —— */
 @media print {
   @page {
     size: A4;
-    margin: 10mm 10mm;
+    margin: 12mm;
   }
 
   html,
   body,
   #root {
     background: #fff !important;
-    min-height: 0;
   }
 
   .no-print {
     display: none !important;
   }
 
-  .print-only {
-    display: block !important;
-  }
-
-  .blank-print {
-    color: #1a1a1a;
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    font-size: 9pt;
-    line-height: 1.25;
-  }
-
-  .blank-top {
-    border-bottom: 1.25pt solid #9a7b4f;
-    padding-bottom: 8pt;
-    margin-bottom: 10pt;
-  }
-
-  .print-brand {
-    margin: 0 0 1pt;
-    font-size: 8pt;
-    letter-spacing: 0.22em;
-    color: #9a7b4f;
-    font-weight: 700;
-  }
-
-  .blank-top h1 {
+  .app {
+    max-width: none;
+    padding: 0;
     margin: 0;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 18pt;
-    font-weight: 500;
   }
 
-  .circle-instruction {
-    margin: 2pt 0 8pt;
-    font-size: 8pt;
-    color: #666;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .blank-meta {
-    display: grid;
-    grid-template-columns: 1.4fr 0.7fr 1.4fr;
-    gap: 8pt;
-  }
-
-  .blank-field {
-    display: flex;
-    align-items: flex-end;
-    gap: 6pt;
-    margin-bottom: 4pt;
-  }
-
-  .blank-field.wide {
-    flex: 1;
-  }
-
-  .blank-label {
-    flex: 0 0 auto;
-    font-size: 7.5pt;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #555;
-    padding-bottom: 1pt;
-  }
-
-  .blank-line {
-    flex: 1;
-    border-bottom: 0.75pt solid #222;
-    min-height: 12pt;
-    min-width: 60pt;
-  }
-
-  .blank-room {
+  .room-card {
     break-inside: avoid;
     page-break-inside: avoid;
-    border: 0.75pt solid #bbb;
-    padding: 8pt 9pt;
-    margin: 0 0 9pt;
+    box-shadow: none;
   }
 
-  .blank-room-head h3,
-  .blank-room > h3 {
-    margin: 0 0 6pt;
-    font-family: Georgia, "Times New Roman", serif;
-    font-size: 11pt;
-    display: flex;
-    align-items: baseline;
-    gap: 10pt;
+  .room-toggle,
+  .btn-text.danger,
+  .block-head .btn-text {
+    display: none !important;
   }
 
-  .name-blank {
-    font-family: "Helvetica Neue", Arial, sans-serif;
-    font-size: 8pt;
-    font-weight: 400;
-    color: #444;
-  }
-
-  .blank-fields {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 6pt 10pt;
-    margin-bottom: 6pt;
-  }
-
-  .blank-fields.types {
-    grid-template-columns: 1fr 1fr;
-    margin-top: 4pt;
-  }
-
-  .circle-block {
-    margin: 5pt 0;
-  }
-
-  .circle-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-  }
-
-  .circle-block h4 {
-    margin: 0;
-    font-size: 7.5pt;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: #9a7b4f;
-  }
-
-  .qty-blank {
-    font-size: 8pt;
-    color: #444;
-  }
-
-  .mini-box {
-    display: inline-block;
-    width: 28pt;
-    height: 10pt;
-    border: 0.75pt solid #222;
-    vertical-align: middle;
-    margin-left: 3pt;
-  }
-
-  .circle-hint {
-    margin: 1pt 0 3pt;
-    font-size: 6.5pt;
-    color: #888;
-    font-style: italic;
-  }
-
-  .circle-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4pt;
-    align-items: center;
-  }
-
-  .size-circle {
-    display: inline-block;
-    border: 0.9pt solid #222;
-    border-radius: 999px;
-    padding: 2.5pt 7pt;
-    font-size: 7.5pt;
-    line-height: 1.2;
-    white-space: nowrap;
-  }
-
-  .size-circle.other {
-    border-style: dashed;
-    color: #444;
-  }
-
-  .blank-checks {
-    display: flex;
-    gap: 16pt;
-    margin: 6pt 0 4pt;
-    font-size: 8pt;
-  }
-
-  .blank-notes {
-    margin-top: 4pt;
-  }
-
-  .notes-lines {
-    margin-top: 2pt;
-  }
-
-  .notes-lines span {
-    display: block;
-    border-bottom: 0.6pt solid #999;
-    height: 11pt;
-    margin-bottom: 2pt;
-  }
-
-  .notes-lines.tall span {
-    height: 12pt;
-    margin-bottom: 3pt;
-  }
-
-  .print-sign {
-    display: flex;
-    gap: 20pt;
-    margin-top: 12pt;
-    padding-top: 6pt;
-  }
-
-  .print-sign > div {
-    flex: 1;
-  }
-
-  .print-sign p {
-    margin: 0 0 14pt;
-    font-size: 7.5pt;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: #666;
-  }
-
-  .sign-line {
-    border-bottom: 0.75pt solid #333;
-    height: 1pt;
+  input,
+  select,
+  textarea {
+    border: 1px solid #ccc !important;
+    background: #fff !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
   }
 }
 
