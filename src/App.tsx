@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { RoomCard } from "./components/RoomCard";
+import { downloadProjectPdf } from "./lib/exportPdf";
 import { clearProject, loadProject, saveProject } from "./lib/storage";
 import { emptyProject, emptyRoom, type Project, type RoomOrder } from "./lib/types";
 import "./App.css";
@@ -66,8 +67,14 @@ export default function App() {
 
   const handleSave = () => {
     saveProject(project);
-    setSavedFlash(true);
-    window.setTimeout(() => setSavedFlash(false), 1500);
+    try {
+      downloadProjectPdf(project);
+      setSavedFlash(true);
+      window.setTimeout(() => setSavedFlash(false), 2000);
+    } catch (err) {
+      console.error(err);
+      window.alert("Could not create the PDF. Please try again.");
+    }
   };
 
   const handleReset = () => {
@@ -99,7 +106,7 @@ export default function App() {
             {linkFlash ? "Link copied" : "Copy share link"}
           </button>
           <button type="button" className="btn-secondary" onClick={handleSave}>
-            {savedFlash ? "Saved" : "Save"}
+            {savedFlash ? "PDF saved" : "Save PDF"}
           </button>
           <button type="button" className="btn-text" onClick={handleReset}>
             New project
@@ -151,7 +158,8 @@ export default function App() {
       </section>
 
       <p className="footer-note">
-        Saved in this browser only. Share link opens a blank new project for anyone.
+        Draft auto-saves in this browser. Save PDF downloads the order to your device.
+        Share link opens a blank new project for anyone.
       </p>
     </div>
   );
