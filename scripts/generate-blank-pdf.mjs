@@ -80,6 +80,13 @@ function makePdf() {
     doc.line(x + labelW, yy + 0.5, x + width, yy + 0.5);
   };
 
+  /** Blank underline only — no pre-printed title */
+  const blankLine = (x, width, yy) => {
+    doc.setDrawColor(34, 34, 34);
+    doc.setLineWidth(0.3);
+    doc.line(x, yy, x + width, yy);
+  };
+
   const circleChip = (text, x, yy) => {
     doc.setFont("helvetica", "normal");
     doc.setFontSize(7);
@@ -95,7 +102,7 @@ function makePdf() {
   };
 
   const circleRow = (title, options) => {
-    ensure(22);
+    ensure(18);
     doc.setFont("helvetica", "bold");
     doc.setFontSize(7.5);
     doc.setTextColor(...GOLD);
@@ -105,15 +112,11 @@ function makePdf() {
     doc.setTextColor(...MUTED);
     doc.text("Qty", pageW - margin - 22, y);
     doc.rect(pageW - margin - 16, y - 3.2, 16, 4.5);
-    y += 3.5;
-    doc.setFontSize(6.5);
-    doc.setTextColor(136, 136, 136);
-    doc.text("Circle size", margin, y);
-    y += 2.5;
+    y += 4;
 
     let x = margin;
     const rowH = 6.2;
-    for (const opt of [...options, "Other ________"]) {
+    for (const opt of [...options, "________"]) {
       doc.setFontSize(7);
       const chipW = doc.getTextWidth(opt) + 4.4 + 1.6;
       if (x + chipW > pageW - margin) {
@@ -127,20 +130,12 @@ function makePdf() {
     y += rowH + 2;
   };
 
-  const roomBlock = (index) => {
+  const roomBlock = () => {
     ensure(95);
     const startY = y;
-    // estimate height roughly; draw border after content using a second pass is hard —
-    // draw light border as we go with a fixed min box via roundedRect after measuring.
 
-    doc.setFont("times", "bold");
-    doc.setFontSize(11);
-    doc.setTextColor(...INK);
-    doc.text(`Room ${index}`, margin + 2, y + 5);
-    doc.setFont("helvetica", "normal");
-    doc.setFontSize(8);
-    doc.setTextColor(...MUTED);
-    doc.text("Name ________________________", margin + 28, y + 5);
+    // Room title — blank line only (fill in by hand)
+    blankLine(margin + 2, contentW - 4, y + 5);
     y += 10;
 
     const colW = (contentW - 8) / 3;
@@ -166,40 +161,24 @@ function makePdf() {
     doc.text("☐  Pillow protector    Qty ____", margin + 95, y);
     y += 6;
 
-    doc.setFontSize(7);
-    doc.setTextColor(...MUTED);
-    doc.text("NOTES", margin + 2, y);
-    y += 2;
-    doc.setDrawColor(153, 153, 153);
-    doc.setLineWidth(0.2);
-    for (let i = 0; i < 2; i++) {
-      y += 5;
-      doc.line(margin + 2, y, pageW - margin - 2, y);
-    }
-    y += 4;
+    blankLine(margin + 2, contentW - 4, y + 2);
+    y += 5;
+    blankLine(margin + 2, contentW - 4, y + 2);
+    y += 6;
 
-    // border around room
     doc.setDrawColor(187, 187, 187);
     doc.setLineWidth(0.3);
     doc.rect(margin, startY, contentW, y - startY);
     y += 5;
   };
 
-  // Header
+  // Header — brand only; title left blank to fill in
   doc.setFont("helvetica", "bold");
   doc.setFontSize(8);
   doc.setTextColor(...GOLD);
   doc.text("RAPP COLLECTIONS", margin, y);
-  y += 7;
-  doc.setFont("times", "bold");
-  doc.setFontSize(18);
-  doc.setTextColor(...INK);
-  doc.text("Order form", margin, y);
-  y += 5;
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(8);
-  doc.setTextColor(...MUTED);
-  doc.text("CIRCLE SIZES  ·  FILL IN BLANKS", margin, y);
+  y += 8;
+  blankLine(margin, 70, y);
   y += 4;
   doc.setDrawColor(...GOLD);
   doc.setLineWidth(0.5);
@@ -212,14 +191,11 @@ function makePdf() {
   blankField("Client", margin + metaW + 4 + metaW * 0.7 + 4, metaW, y);
   y += 10;
 
-  roomBlock(1);
-  roomBlock(2);
+  roomBlock();
+  roomBlock();
 
-  ensure(40);
-  doc.setFont("times", "bold");
-  doc.setFontSize(11);
-  doc.setTextColor(...INK);
-  doc.text("Additional notes", margin, y);
+  ensure(36);
+  blankLine(margin, 50, y);
   y += 3;
   doc.setDrawColor(153, 153, 153);
   for (let i = 0; i < 3; i++) {
@@ -228,16 +204,8 @@ function makePdf() {
   }
   y += 12;
 
-  doc.setFont("helvetica", "normal");
-  doc.setFontSize(7.5);
-  doc.setTextColor(...MUTED);
-  doc.text("CLIENT SIGNATURE", margin, y);
-  doc.text("DATE", pageW / 2 + 5, y);
-  y += 12;
-  doc.setDrawColor(34, 34, 34);
-  doc.setLineWidth(0.3);
-  doc.line(margin, y, pageW / 2 - 5, y);
-  doc.line(pageW / 2 + 5, y, pageW - margin, y);
+  blankLine(margin, pageW / 2 - margin - 8, y);
+  blankLine(pageW / 2 + 5, pageW / 2 - margin - 8, y);
 
   return doc;
 }
