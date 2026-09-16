@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { PrintSheet } from "./components/PrintSheet";
+import { BlankPrintForm } from "./components/BlankPrintForm";
 import { RoomCard } from "./components/RoomCard";
 import { downloadProjectPdf } from "./lib/exportPdf";
 import { clearProject, loadProject, saveProject } from "./lib/storage";
@@ -121,7 +121,7 @@ export default function App() {
               {linkFlash ? "Link copied" : "Copy share link"}
             </button>
             <button type="button" className="btn-secondary" onClick={handlePrint}>
-              Print
+              Print blank form
             </button>
             <button type="button" className="btn-secondary" onClick={handleSave}>
               {savedFlash ? "PDF saved" : "Save PDF"}
@@ -176,12 +176,12 @@ export default function App() {
         </section>
 
         <p className="footer-note">
-          Draft auto-saves in this browser. Print or Save PDF for a paper copy.
-          Share link opens a blank new project for anyone.
+          Draft auto-saves in this browser. Print blank form for circling sizes by hand.
+          Save PDF downloads the filled digital order.
         </p>
       </div>
 
-      <PrintSheet project={project} />
+      <BlankPrintForm roomCount={Math.max(2, project.rooms.length)} />
     </>
   );
 }
